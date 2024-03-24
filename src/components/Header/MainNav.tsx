@@ -8,8 +8,17 @@ import { Logo } from "@/components";
 
 import CartSideBar from "./CartSideBar";
 import MenuBar from "./MenuBar";
+import SideBarMenu from "../Menu/SideBarMenu";
+import { useState } from "react";
 
 const MainNav = () => {
+
+  const [menu, setMenu] = useState(false)
+
+  const abreMenu =() =>{
+    setMenu(true)
+  }
+
   return (
     <>
       <div className="container flex items-center justify-between">
@@ -25,11 +34,24 @@ const MainNav = () => {
 
         <div className="hidden flex-1 items-center justify-end gap-7 lg:flex">
           <RiSearch2Line className="text-2xl" />
-          <Link href="#">
+          <Link href="#"
+          onClick={abreMenu}
+         
+          >
             <LuUser2 className="text-2xl" />
           </Link>
           <CartSideBar />
-          SideBarMenu
+          {menu &&
+          (
+            <>
+            <SideBarMenu
+            menu={menu}
+            setMenu={setMenu}
+            />
+            
+            </>
+          )
+          }
         </div>
 
         <div className="lg:hidden">

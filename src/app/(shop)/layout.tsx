@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Header from "@/components/Header/Header";
 import Loading from "../loading";
+import Footer from "@/components/Footer/Footer";
 
 
 export default function ShopLayout({
@@ -12,7 +13,7 @@ export default function ShopLayout({
         <>
         <Header/>
         <Suspense fallback={<Loading />}>{children}</Suspense>
-        
+        <Footer/>
       </>
     );
   }
