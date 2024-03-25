@@ -1,5 +1,6 @@
 "use client";
 
+import { useUIStore } from "@/store";
 import clsx from "clsx";
 
 import Link from "next/link";
@@ -15,38 +16,47 @@ import {
   IoTicketOutline,
 } from "react-icons/io5";
 
-interface Props{
- 
-  setMenu:Dispatch<SetStateAction<boolean>>
-}
 
-const SideBarMenu = ({setMenu}:Props) => {
 
-  const cerrarMenu =()=>{
-    setMenu(false)
-  }
+const SideBarMenu = () => {
+
+
+  const isSideMenuOpen = useUIStore( state => state.isSideMenuOpen );
+  const closeMenu = useUIStore( state => state.closeSideMenu );
+
+  
   return (
     <>
       <div>
         {/* Background black */}
-
-        <div className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30" />
-
+        {
+        isSideMenuOpen && (
+        <div className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30" 
+        />
+        )
+      }
         {/* Blur */}
-
-        <div className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" />
-
+        {
+        isSideMenuOpen && (
+        <div className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm" 
+        onClick={ closeMenu }
+        />
+        )
+      }
         {/* Sidemenu */}
         <nav
           className={clsx(
             "fixed p-5 right-0 top-0 w-[200px] bg-white z-20 shadow-2xl transform transition-all duration-300",
-            {}
+            {
+              "translate-x-full": !isSideMenuOpen
+            }
           )}
         >
           <IoCloseOutline
             size={25}
             className="absolute top-5 right-5 cursor-pointer"
-            onClick={cerrarMenu}
+            onClick={ closeMenu }
+            
           />
 
           <>

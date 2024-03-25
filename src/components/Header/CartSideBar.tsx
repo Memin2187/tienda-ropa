@@ -120,13 +120,7 @@ const CartSideBar: React.FC<CartSideBarProps> = () => {
                         <span className="text-xl font-medium">$597</span>
                       </p>
                       <div className="mt-5 flex items-center gap-5">
-                        <ButtonPrimary
-                          href="/checkout"
-                          onClick={handleCloseMenu}
-                          className="w-full flex-1"
-                        >
-                          Pagar
-                        </ButtonPrimary>
+                       
                         <ButtonSecondary
                           onClick={handleCloseMenu}
                           href="/cart"
