@@ -1,10 +1,14 @@
+export const revalidate = 604800//7 dias
 import Link from 'next/link';
-import { initialData } from '@/seed/seed';  
+import { Metadata, ResolvingMetadata } from "next";
+
 import { ButtonCircle3 } from '@/components';
 import { MdArrowBack } from 'react-icons/md';
 import SectionProductHeader from './SectionProductHeader';
 import { pathOr } from 'ramda';
 import { SectionMoreProducts } from '@/components';
+import { getProductBySlug } from '@/actions';
+
 
 interface Props {
   params: {
@@ -12,15 +16,43 @@ interface Props {
   };
 }
 
+// export async function generateMetadata(
+//   { params }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   // read route params
+//   const slug = params.slug;
 
-const page = ({params}:Props) => {
+//   // fetch data
+//   const product = await getProductBySlug(slug);
+
+ 
+//   return {
+//     title: product?.title ?? "Producto no encontrado",
+//     description: product?.description ?? "",
+//     openGraph: {
+//       title: product?.title ?? "Producto no encontrado",
+//       description: product?.description ?? "",
+//       // images: [], // https://misitioweb.com/products/image.png
+//       images: [ `/products/${ product?.images[1] }`],
+//     },
+//   };
+// }
+
+
+const page = async({params}:Props) => {
 
 
   const { slug } = params;
 
-  console.log(slug)
-  const selectedProduct = initialData.products.find( product => product.slug === slug );
+  //console.log(slug)
+  //const selectedProduct = initialData.products.find( product => product.slug === slug );
 
+  const selectedProduct = await getProductBySlug(slug);
+
+  if(!selectedProduct){
+    return null
+  }
 
   return (
     <div className="container">
@@ -39,6 +71,7 @@ const page = ({params}:Props) => {
           description={pathOr('', ['description'], selectedProduct)}
           slug={pathOr('', ['slug'], selectedProduct)}
           sizes={pathOr([], ['sizes'], selectedProduct)}
+          id={pathOr('', ['id'], selectedProduct)}
          
         
         />
@@ -54,3 +87,5 @@ const page = ({params}:Props) => {
 }
 
 export default page
+
+

@@ -12,14 +12,12 @@ interface ImageShowCaseProps {
 export const ImageShowCase: FC<ImageShowCaseProps> = ({ image }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  console.log(image)
-
   return (
     <div className="space-y-5 rounded-2xl p-2">
       <div className="relative overflow-hidden rounded-2xl md:h-[500px]">
         <Image
-          src={`/products/${image[0]}`}
-          alt="shoe image"
+          src={`/products/${image[activeImageIndex]}`}
+          alt={`/products/${image}`}
           className="h-full w-full object-cover object-top"
           width={1000}
           height={1000}

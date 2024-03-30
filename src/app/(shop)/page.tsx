@@ -1,16 +1,35 @@
-import { AllProducts } from "@/components"
-import { initialData } from '@/seed/seed';
+export const revalidate = 60; // 60 segundos
+import { AllProducts } from "@/components";
+//import { initialData } from '@/seed/seed';
+import { getPaginatedProductsWithImages } from "@/actions";
+import { redirect } from "next/navigation";
+import { Pagination } from "@/components";
 
-const products = initialData.products;
+//const products = initialData.products;
 
-const page = () => {
-  return (
-    <div className="container mb-20">
-      <AllProducts
-      products={products}
-      />
-    </div>
-  )
+interface Props {
+  searchParams: {
+    page?: string;
+  };
 }
 
-export default page
+const page = async ({ searchParams }: Props) => {
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+
+  const { products, currentPage, totalPages } =
+    await getPaginatedProductsWithImages({ page });
+
+  if (products.length === 0) {
+    redirect("/");
+  }
+
+  return (
+    <div className="container mb-20">
+      <AllProducts products={products} />
+
+      <Pagination totalPages={totalPages} />
+    </div>
+  );
+};
+
+export default page;

@@ -4,6 +4,8 @@ import { QuantitySelector } from '@/components';
 import { ValidSizes } from '@/interfaces';
 
 import { MdStar } from 'react-icons/md';
+import { useCartStore } from '@/store';
+import { CartProduct } from '@/interfaces';
 
 
 import {ImageShowCase} from '@/components';
@@ -22,7 +24,7 @@ interface SectionProductHeaderProps {
   description: string;
   slug:string,
   sizes: ValidSizes[],
-  
+  id:string
 }
 
 
@@ -36,14 +38,37 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
   description,
   slug,
   sizes,
-
+  id
   
 }) => {
  
-  
+  const addProductToCart = useCartStore( state => state.addProductTocart );
   const [size,setSize] = useState<ValidSizes | undefined>()
   const [quantity,setQuantity] = useState<number>(1)
+  const [posted, setPosted] = useState(false);
 
+  const addToCart = ()=>{
+    //console.log({size,quantity})
+    setPosted(true);
+    if(!size) return
+
+    const cartProduct:CartProduct={
+      id: id,
+      slug: slug,
+      title: productName,
+      price: price,
+      quantity: quantity,
+      size: size,
+      image: images[0]
+    }
+
+    
+
+    addProductToCart(cartProduct)
+    setPosted(false);
+    setQuantity(1);
+    setSize(undefined);
+  }
  
   return (
     <div className="items-stretch justify-between space-y-10 lg:flex lg:space-y-0">
@@ -72,11 +97,11 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
           quantity={quantity}
           onQuantityChanged={setQuantity}
           />
-          {/* {posted && !size && (
+          {posted && !size && (
         <span className="mt-2 text-red-500 fade-in">
           Debe de seleccionar una talla*
         </span>
-      )} */}
+      )}
         <SizeSelect 
         selectedSize={size}
         availableSizes={sizes}
@@ -94,7 +119,7 @@ const SectionProductHeader: FC<SectionProductHeaderProps> = ({
             Comprar ahora
           </ButtonPrimary> */}
           <ButtonPrimary className="w-3/5"
-           href={'/cart'}
+           onClick={addToCart} 
           >
             Agregar al carrito
           </ButtonPrimary>

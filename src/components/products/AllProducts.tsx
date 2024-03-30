@@ -1,6 +1,6 @@
 "use client";
 import {SectionProductsHeader} from "@/components";
-import { useState } from "react";
+//import { useState } from "react";
 
 import {ProductCard} from "@/components";
 

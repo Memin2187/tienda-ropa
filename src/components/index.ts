@@ -31,3 +31,6 @@ export * from './Variant/Variant'
 export * from './shared/NextPrev/NextPrev'
 
 export * from './shared/Heading/Heading'
+
+//pagination
+export * from './Pagination/Pagination'

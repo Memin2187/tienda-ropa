@@ -1,26 +1,23 @@
-'use client';
-import { Dialog, Transition } from '@headlessui/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
+"use client";
+
+import { Dialog, Transition } from "@headlessui/react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { Fragment, useEffect, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
-import { MdClose } from 'react-icons/md';
+import { MdClose } from "react-icons/md";
 
-import { initialData } from '@/seed/seed';
+import {ButtonCircle3} from "@/components";
 
-import {ButtonCircle3} from '@/components';
-import {ButtonPrimary} from '@/components';
-import {ButtonSecondary} from '@/components';
+import {ButtonSecondary} from "@/components";
+
+
+import {LikeButton} from "@/components";
+import {  useCartStore } from "@/store";
 import { QuantitySelector } from "@/components";
-
-import { Product } from '@/interfaces';
-
-import {LikeButton} from '@/components';
-
-const products = initialData.products;
-
-
+import { currencyFormat } from "@/utils";
+import { IoCartOutline } from "react-icons/io5";
 
 export interface CartSideBarProps {}
 const CartSideBar: React.FC<CartSideBarProps> = () => {
@@ -28,50 +25,89 @@ const CartSideBar: React.FC<CartSideBarProps> = () => {
  
   const handleOpenMenu = () => setIsVisable(true);
   const handleCloseMenu = () => setIsVisable(false);
+  const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
+  const totalItemsInCart = useCartStore((state) => state.getTotalItems());
+  const removeProduct = useCartStore( state => state.removeProduct );
+  const productsInCart = useCartStore((state) => state.cart);
+  const { itemsInCart, subTotal, tax, total } = useCartStore((state) =>
+    state.getSummaryInformation()
+  );
+  const [loaded, setLoaded] = useState(false);
+ 
 
-  const renderProduct = (product:Product) => {
-    const { title, images, price, slug } = product;
 
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  const renderProduct = () => {
+    
+
+   
     return (
-      <div key={title} className="flex py-5 last:pb-0">
-        <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
-          <Image
-            fill
-            src={`/products/${images[0]}`}
-            alt={title}
-            className="h-full w-full object-cover object-top"
-          />
-          <Link
-            onClick={handleCloseMenu}
-            className="absolute inset-0"
-            href={`/products/${slug}`}
-          />
-        </div>
+      <>
+        {productsInCart.map((product) => (
+          <div key={product.slug} className="flex py-5 last:pb-0">
+            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
+              <Image
+                fill
+                src={`/products/${product.image}`}
+                alt={product.title}
+                className="h-full w-full object-cover object-top"
+              />
+              <Link
+                onClick={handleCloseMenu}
+                className="absolute inset-0"
+                href={`/product/${product.slug}`}
+              />
+            </div>
 
-        <div className="ml-4 flex flex-1 flex-col justify-between">
-          <div>
-            <div className="flex justify-between ">
+            <div className="ml-4 flex flex-1 flex-col justify-between">
               <div>
-                <h3 className="font-medium ">
-                  <Link onClick={handleCloseMenu} href={`/products/${slug}`}>
-                    {title}
-                  </Link>
-                </h3>
+                <div className="flex justify-between ">
+                  <div>
+                    <h3 className="font-medium ">
+                      <Link
+                        onClick={handleCloseMenu}
+                        href={`/product/${product.slug}`}
+                      >
+                        {product.title}
+                      </Link>
+                    </h3>
+                  </div>
+                  <span className=" font-medium">${product.price}.00</span>
+                </div>
               </div>
-              <span className=" font-medium">${price}.00</span>
+              <div className="flex w-full items-end justify-between text-sm">
+                <div className="flex items-center gap-3">
+                  <LikeButton />
+                  <button
+                  onClick={ () => removeProduct(product) }
+                  >
+                    <AiOutlineDelete className="text-2xl" />
+                  </button>
+                  
+                </div>
+                <div>
+                <QuantitySelector 
+              quantity={ product.quantity } 
+              onQuantityChanged={ quantity => updateProductQuantity(product, quantity) }
+            />
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex w-full items-end justify-between text-sm">
-            <div className="flex items-center gap-3">
-              <LikeButton />
-              <AiOutlineDelete className="text-2xl" />
-            </div>
-            <div>
-            <p>QuantitySelector</p>
-            </div>
+        ))}
+
+        {itemsInCart === 0 && loaded === true && (
+          <>
+          <div className="flex items-center justify-center mt-40 ">
+          <IoCartOutline size={40} className="mx-5" /><p>El carrito esta vacío</p>
+
           </div>
-        </div>
-      </div>
+          </>
+        )}
+      </>
     );
   };
 
@@ -98,15 +134,15 @@ const CartSideBar: React.FC<CartSideBarProps> = () => {
                   <div className="relative h-screen bg-white">
                     <div className="hiddenScrollbar h-screen overflow-y-auto p-5">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-xl font-semibold">Carrito de compras</h3>
+                        <h3 className="text-xl font-semibold">
+                          Carrito de compras
+                        </h3>
                         <ButtonCircle3 onClick={handleCloseMenu}>
                           <MdClose className="text-2xl" />
                         </ButtonCircle3>
                       </div>
                       <div className="divide-y divide-neutral-300">
-                        {products
-                          .slice(0, 2)
-                          .map((product) => renderProduct(product))}
+                        { renderProduct()}
                       </div>
                     </div>
                     <div className="absolute bottom-0 left-0 w-full bg-neutral-50 p-5">
@@ -114,13 +150,20 @@ const CartSideBar: React.FC<CartSideBarProps> = () => {
                         <span>
                           <span className="font-medium">Subtotal</span>
                           <span className="block text-sm text-neutral-500">
-                          Gastos de envío e impuestos calculados en el momento de la compra.
+                            Gastos de envío e impuestos calculados en el momento
+                            de la compra.
                           </span>
                         </span>
-                        <span className="text-xl font-medium">$597</span>
+                        <span className="text-xl font-medium">{currencyFormat(subTotal)}</span>
                       </p>
                       <div className="mt-5 flex items-center gap-5">
-                       
+                        {/* <ButtonPrimary
+                          href="/checkout"
+                          onClick={handleCloseMenu}
+                          className="w-full flex-1"
+                        >
+                          Pagar
+                        </ButtonPrimary> */}
                         <ButtonSecondary
                           onClick={handleCloseMenu}
                           href="/cart"
@@ -154,27 +197,22 @@ const CartSideBar: React.FC<CartSideBarProps> = () => {
 
   return (
     <>
-      <button
-        type="button"
-       
-        onMouseEnter={handleOpenMenu} 
-      
+      <Link
+        onMouseEnter={handleOpenMenu}
         className="focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        href={totalItemsInCart === 0 && loaded ? "/empty" : "/cart"}
       >
-        <div className='relative'
-        
-        >
-            <span className='absolute text-xs rounded-full px-1 font-bold top-2 right-2 bg-blue-500 text-white'>
-                2
+        <div className="relative">
+          {loaded && totalItemsInCart > 0 && (
+            <span className="absolute text-xs rounded-full px-1 font-bold top-2 right-2 bg-blue-500 text-white">
+              {totalItemsInCart}
             </span>
-            <FaShoppingCart />
-
+          )}
+          <FaShoppingCart />
         </div>
-      </button>
-      
-          {renderContent()}
-    
-      
+      </Link>
+
+      {renderContent()}
     </>
   );
 };

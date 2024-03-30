@@ -1,27 +1,41 @@
-import { initialData } from '@/seed/seed';
-import { Category } from '@/interfaces';
-import { AllProducts } from '@/components';
+export const revalidate = 60; // 60 segundos
 
-const seedProducts = initialData.products;
+import { AllProducts, Pagination } from "@/components";
+import { getPaginatedProductsWithImages } from "@/actions";
+import { Gender } from "@prisma/client";
+
+import { redirect } from "next/navigation";
 
 interface Props {
-    params: {
-      gender: Category;
-    }
+  params: {
+    gender: string;
+  };
+  searchParams: {
+    page?: string;
+  };
+}
+
+const page = async ({ params, searchParams }: Props) => {
+  const { gender } = params;
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+
+  const { products, currentPage, totalPages } =
+    await getPaginatedProductsWithImages({
+      page,
+      gender: gender as Gender,
+    });
+
+  if (products.length === 0) {
+    redirect(`/gender/${gender}`);
   }
-
-
-const page = ({params}:Props) => {
-
-    const { gender } = params;
-    const products = seedProducts.filter( product => product.gender === gender );
 
   return (
     <>
-    <AllProducts products={products}/>
-    
-    </>
-  )
-}
+      <AllProducts products={products} />
 
-export default page
+      <Pagination totalPages={totalPages} />
+    </>
+  );
+};
+
+export default page;
