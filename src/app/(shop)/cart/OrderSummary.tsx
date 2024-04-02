@@ -54,7 +54,7 @@ const OrderSummary = () => {
               <span>{currencyFormat(total)}</span>
             </div>
           </div>
-          <ButtonPrimary href="/checkout" className="mt-8 w-full">
+          <ButtonPrimary href="/checkout/address" className="mt-8 w-full">
             Comprar Ahora
           </ButtonPrimary>
         </div>

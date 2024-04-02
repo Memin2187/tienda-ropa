@@ -1,11 +1,11 @@
 export const revalidate = 60; // 60 segundos
 import { AllProducts } from "@/components";
-//import { initialData } from '@/seed/seed';
+
 import { getPaginatedProductsWithImages } from "@/actions";
 import { redirect } from "next/navigation";
 import { Pagination } from "@/components";
 
-//const products = initialData.products;
+
 
 interface Props {
   searchParams: {
@@ -19,9 +19,10 @@ const page = async ({ searchParams }: Props) => {
   const { products, currentPage, totalPages } =
     await getPaginatedProductsWithImages({ page });
 
-  if (products.length === 0) {
-    redirect("/");
-  }
+  // if (products.length === 0) {
+  //   redirect("/");
+  // }
+  
 
   return (
     <div className="container mb-20">

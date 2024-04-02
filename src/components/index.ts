@@ -34,3 +34,6 @@ export * from './shared/Heading/Heading'
 
 //pagination
 export * from './Pagination/Pagination'
+
+//providers
+export * from './Providers/Providers'

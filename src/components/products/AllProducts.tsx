@@ -9,15 +9,21 @@ import { Product } from "@/interfaces";
 
 interface Products {
   products: Product[];
+  gender:string
 }
 
-export const AllProducts = ({ products }: Products) => {
+export const AllProducts = ({ products,gender  }: Products) => {
 
 
   return (
     <div className="container mb-20">
       <div className="mb-10">
         <SectionProductsHeader />
+      </div>
+      <div className="text-center">
+        <h1 className="font-bold text-lg">
+          {gender ? `Ropa de ${gender}` : ''}
+        </h1>
       </div>
 
       <div className="relative flex flex-col" id="body">

@@ -31,7 +31,9 @@ const page = async ({ params, searchParams }: Props) => {
 
   return (
     <>
-      <AllProducts products={products} />
+      <AllProducts products={products}
+      gender={gender}
+      />
 
       <Pagination totalPages={totalPages} />
     </>

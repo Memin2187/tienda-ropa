@@ -26,3 +26,29 @@ export interface CartProduct {
   image: string;
 }
 
+
+export type FormInputs = {
+  firstName: string;
+  lastName: string;
+  address: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  phone: string;
+  rememberAddress: boolean;
+};
+
+export interface Address {
+  firstName: string;
+  lastName: string;
+  address: string;
+  postalCode: string;
+  city: string;
+  country: string;
+  phone: string;
+}
+
+export interface Country {
+  id: string;
+  name: string;
+}

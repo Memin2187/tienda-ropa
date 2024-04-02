@@ -67,6 +67,7 @@ const PlaceOrder = () => {
         </div>
 
         <button
+        
           className={clsx({
             "mt-8 w-full bg-gray-500 text-white p-3 rounded-md": true,
           })}
