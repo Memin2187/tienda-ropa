@@ -5,25 +5,25 @@ import prisma from "../lib/prisma";
 
 async function main() {
 
-  // await prisma.productImage.deleteMany();
-  // await prisma.product.deleteMany();
+  await prisma.productImage.deleteMany();
+  await prisma.product.deleteMany();
 
 
-  //const { products } = initialData;
+  const { products, categories, users } = initialData;
   //catagorias
-  // const categoriesData = categories.map((name) => ({ name }));
+  const categoriesData = categories.map((name) => ({ name }));
 
-  // await prisma.category.createMany({
-  //   data: categoriesData,
-  // });
+  await prisma.category.createMany({
+    data: categoriesData,
+  });
 
-  // const categoriesDB = await prisma.category.findMany();
+  const categoriesDB = await prisma.category.findMany();
 
     
-  // const categoriesMap = categoriesDB.reduce( (map, category) => {
-  //   map[ category.name.toLowerCase()] = category.id;
-  //   return map;
-  // }, {} as Record<string, string>); 
+  const categoriesMap = categoriesDB.reduce( (map, category) => {
+    map[ category.name.toLowerCase()] = category.id;
+    return map;
+  }, {} as Record<string, string>); 
 
   await prisma.country.createMany({
     data: countries
@@ -31,32 +31,32 @@ async function main() {
 
   
   //products
-  // products.forEach(async (product) => {
-  //   const { type, images, ...rest } = product;
+  products.forEach(async (product) => {
+    const { type, images, ...rest } = product;
 
-  //   const dbProduct = await prisma.product.create({
-  //    data:{
-  //       ...rest,
-  //       categoryId: categoriesMap[type],
+    const dbProduct = await prisma.product.create({
+     data:{
+        ...rest,
+        categoryId: categoriesMap[type],
         
-  //    }
-  //   });
+     }
+    });
 
-    // Images
-  //   const imagesData = images.map((image) => ({
-  //     url: image,
-  //     productId: dbProduct.id,
-  //   }));
+    //Images
+    const imagesData = images.map((image) => ({
+      url: image,
+      productId: dbProduct.id,
+    }));
 
-  //   await prisma.productImage.createMany({
-  //     data: imagesData,
-  //   });
-  // });
+    await prisma.productImage.createMany({
+      data: imagesData,
+    });
+  });
 
-  // //users
-  // await prisma.user.createMany({
-  //   data: users
-  // });
+  //users
+  await prisma.user.createMany({
+    data: users
+  });
 
 
   console.log("seed ejecutado correctamente");
