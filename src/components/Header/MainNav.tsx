@@ -29,7 +29,7 @@ const MainNav = () => {
         </div>
 
         <div className="flex flex-row items-center justify-end gap-7 lg:flex-1">
-          <RiSearch2Line className="text-2xl" />
+          <RiSearch2Line className="text-2xl hidden" />
           <Link href="#"
           onClick={openSideMenu}
           >
