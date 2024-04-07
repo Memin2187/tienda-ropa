@@ -24,6 +24,7 @@ export * from './products/ImageShowCase'
 export * from './products/SizeSelect'
 export * from './products/StockLabel'
 export * from './products/SectionMoreProducts'
+export * from './products/ProductImage'
 
 export * from './Variant/Variant'
 
@@ -37,3 +38,6 @@ export * from './Pagination/Pagination'
 
 //providers
 export * from './Providers/Providers'
+
+//order
+export * from './order/OrderStatus'

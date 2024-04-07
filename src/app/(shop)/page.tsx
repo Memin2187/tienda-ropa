@@ -19,14 +19,14 @@ const page = async ({ searchParams }: Props) => {
   const { products, currentPage, totalPages } =
     await getPaginatedProductsWithImages({ page });
 
-  // if (products.length === 0) {
-  //   redirect("/");
-  // }
+  if (products.length === 0) {
+    redirect("/");
+  }
   
 
   return (
     <div className="container mb-20">
-      <AllProducts products={products} />
+      <AllProducts products={products} gender={""} />
 
       <Pagination totalPages={totalPages} />
     </div>

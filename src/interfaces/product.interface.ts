@@ -38,6 +38,20 @@ export type FormInputs = {
   rememberAddress: boolean;
 };
 
+export interface FormInputs2 {
+  title: string;
+  slug: string;
+  description: string;
+  price: number;
+  inStock: number;
+  sizes: string[];
+  tags: string;
+  gender: "hombres" | "mujeres" | "infantil" | "unisex";
+  categoryId: string;
+
+  images?: FileList;
+}
+
 export interface Address {
   firstName: string;
   lastName: string;
@@ -52,3 +66,11 @@ export interface Country {
   id: string;
   name: string;
 }
+
+export interface ProductImage {
+  id: number;
+  url: string;
+  productId: string;
+}
+
+

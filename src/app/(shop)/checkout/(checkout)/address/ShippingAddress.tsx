@@ -53,7 +53,7 @@ const ShippingAddress: FC<Props> = ({ countries, userStoredAddress = {} }) => {
     if (address.firstName) {
       reset(address);
     }
-  }, []);
+  }, [address, reset]);
 
   const onSubmit = async (data: FormInputs) => {
     const { rememberAddress, ...restAddress } = data;
