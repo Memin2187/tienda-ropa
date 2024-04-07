@@ -28,7 +28,7 @@ const MainNav = () => {
           ))}
         </div>
 
-        <div className="hidden flex-1 items-center justify-end gap-7 lg:flex">
+        <div className="flex flex-row items-center justify-end gap-7 lg:flex-1">
           <RiSearch2Line className="text-2xl" />
           <Link href="#"
           onClick={openSideMenu}
@@ -39,6 +39,8 @@ const MainNav = () => {
           <SideBarMenu />
           
         </div>
+
+       
 
         <div className="lg:hidden">
           <MenuBar />

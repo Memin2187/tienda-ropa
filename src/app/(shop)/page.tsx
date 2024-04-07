@@ -20,7 +20,7 @@ const page = async ({ searchParams }: Props) => {
     await getPaginatedProductsWithImages({ page });
 
   if (products.length === 0) {
-    redirect("/");
+    redirect("/auth/login");
   }
   
 

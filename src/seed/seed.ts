@@ -79,6 +79,11 @@ export const NavLinks: NavItemType[] = [
     name: 'Contacto',
     href: '/contact',
   },
+  {
+    id: ncNanoId(),
+    name: 'Carrito',
+    href: '/cart',
+  },
 ];
 
 

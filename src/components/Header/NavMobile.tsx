@@ -1,24 +1,30 @@
-import { Disclosure } from '@headlessui/react';
-import Link from 'next/link';
-import { MdClose, MdKeyboardArrowDown } from 'react-icons/md';
+import { Disclosure } from "@headlessui/react";
+import Link from "next/link";
+import { MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
-import { NavLinks } from '@/seed/seed';
+import { NavLinks } from "@/seed/seed";
 
+import { Logo } from "@/components";
 
-
-import {Logo} from '@/components';
-
-import type { NavItemType } from '@/seed/seed';
+import type { NavItemType } from "@/seed/seed";
+import { RiSearch2Line } from "react-icons/ri";
+import CartSideBar from "./CartSideBar";
+import SideBarMenu from "../Menu/SideBarMenu";
+import { LuUser2 } from "react-icons/lu";
+import { useUIStore } from "@/store";
 
 export interface NavMobileProps {
   onClickClose?: () => void;
 }
 
 const NavMobile: React.FC<NavMobileProps> = ({ onClickClose }) => {
+
+  const openSideMenu = useUIStore((state) => state.openSideMenu);
+
   /* eslint-disable */
   const renderMenuChild = (
     item: NavItemType,
-    itemClass = ' pl-3 font-medium ',
+    itemClass = " pl-3 font-medium "
   ) => {
     return (
       <ul className="nav-mobile-sub-menu pb-1 pl-6 text-base">
@@ -31,7 +37,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ onClickClose }) => {
               className={`mt-0.5 flex rounded-lg pr-4 text-sm hover:bg-neutral-100 ${itemClass}`}
             >
               <span
-                className={`py-1 ${!i.children ? 'block w-full' : ''}`}
+                className={`py-1 ${!i.children ? "block w-full" : ""}`}
                 onClick={onClickClose}
               >
                 {i.name}
@@ -51,9 +57,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ onClickClose }) => {
               )}
             </Link>
             {i.children && (
-              <Disclosure.Panel>
-                {renderMenuChild(i, 'pl-3')}
-              </Disclosure.Panel>
+              <Disclosure.Panel>{renderMenuChild(i, "pl-3")}</Disclosure.Panel>
             )}
           </Disclosure>
         ))}
@@ -71,7 +75,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ onClickClose }) => {
           }}
         >
           <span
-            className={!item.children ? 'block w-full' : ''}
+            className={!item.children ? "block w-full" : ""}
             onClick={onClickClose}
           >
             {item.name}
@@ -96,18 +100,22 @@ const NavMobile: React.FC<NavMobileProps> = ({ onClickClose }) => {
     <div className="h-screen w-full divide-y divide-neutral-300 overflow-y-auto bg-white py-2 shadow-lg ring-1 transition">
       <div className="px-5 py-2">
         <Logo />
+     
         <div className="absolute right-2 top-2 p-1">
           <MdClose onClick={onClickClose} />
         </div>
       </div>
       <ul className="flex flex-col space-y-5 px-5 py-6">
         {NavLinks.map(renderItem)}
+        
+       
       </ul>
+     
       <div className="mt-3 px-5 py-3">
-        <div className="flex flex-row items-center gap-5">
-         
-        </div>
+        <div className="flex flex-row items-center gap-5"></div>
+        
       </div>
+     
     </div>
   );
 };
